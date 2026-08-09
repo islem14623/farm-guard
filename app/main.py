@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends
 from pydantic import BaseModel
 from sqlalchemy.orm import Session 
-from app.auth import hash_password, verify_password, create_access_token
+from app.auth import hash_password, verify_password, create_access_token, get_current_user
 import random
 from app.database import init_db, get_db
 from app import models
@@ -70,13 +70,14 @@ def check_anomaly(data: SensorData):
     return alerts
 
 
-def save_reading(data: SensorData, db: Session):
+def save_reading(data: SensorData, db: Session, user_id: int = None):
     """Saves a sensor reading to the database and returns the saved row."""
     new_reading = models.SensorReading(
         temperature=data.temperature,
         humidity=data.humidity,
         electricity_on=data.electricity_on,
         chicken_age_days=data.chicken_age_days,
+        user_id=user_id,
     )
     db.add(new_reading)
     db.commit()
@@ -90,11 +91,14 @@ def read_root():
 
 
 @app.post("/sensor-data")
-def receive_sensor_data(data: SensorData, db: Session = Depends(get_db)):
+def receive_sensor_data(
+    data: SensorData,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
+):
     alerts = check_anomaly(data)
-    new_reading = save_reading(data, db)
+    new_reading = save_reading(data, db, user_id=current_user.id)
     return {"status": "saved", "id": new_reading.id, "alerts": alerts}
-
 
 @app.get("/fake-sensor")
 def generate_fake_data(db: Session = Depends(get_db)):
