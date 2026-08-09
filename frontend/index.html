@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>فارم غارد</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <h1>فارم غارد</h1>
+      <p>لوحة مراقبة مزرعة الدواجن</p>
+    </header>
+
+    <main>
+      <section id="auth-section" class="card auth-card">
+        <div class="auth-tabs">
+          <button id="login-tab" class="tab-button active">تسجيل الدخول</button>
+          <button id="signup-tab" class="tab-button">إنشاء حساب</button>
+        </div>
+
+        <form id="login-form" class="auth-form">
+          <label for="login-phone">الهاتف</label>
+          <input type="tel" id="login-phone" placeholder="أدخل رقم الهاتف" required />
+
+          <label for="login-password">كلمة المرور</label>
+          <input type="password" id="login-password" placeholder="كلمة المرور" required />
+
+          <button type="submit" class="primary-button">دخول</button>
+          <p class="form-message" id="login-message"></p>
+        </form>
+
+        <form id="signup-form" class="auth-form hidden">
+          <label for="signup-name">الاسم</label>
+          <input type="text" id="signup-name" placeholder="الاسم الكامل" required />
+
+          <label for="signup-phone">الهاتف</label>
+          <input type="tel" id="signup-phone" placeholder="أدخل رقم الهاتف" required />
+
+          <label for="signup-password">كلمة المرور</label>
+          <input type="password" id="signup-password" placeholder="كلمة المرور" required />
+
+          <button type="submit" class="primary-button">إنشاء الحساب</button>
+          <p class="form-message" id="signup-message"></p>
+        </form>
+      </section>
+
+      <section id="dashboard" class="hidden">
+        <div class="dashboard-header">
+          <div>
+            <h2>آخر قراءة</h2>
+            <p id="dashboard-user"></p>
+          </div>
+          <button id="logout-button" class="secondary-button">تسجيل خروج</button>
+        </div>
+
+        <div class="status-grid">
+          <div class="status-card">
+            <span>درجة الحرارة</span>
+            <strong id="latest-temperature">--</strong>
+          </div>
+          <div class="status-card">
+            <span>الرطوبة</span>
+            <strong id="latest-humidity">--</strong>
+          </div>
+          <div class="status-card">
+            <span>الكهرباء</span>
+            <strong id="latest-electricity">--</strong>
+          </div>
+          <div class="status-card">
+            <span>عمر الدجاج</span>
+            <strong id="latest-age">--</strong>
+          </div>
+        </div>
+
+        <div class="alerts-card hidden" id="alerts-container">
+          <h3>تنبيهات نشطة</h3>
+          <ul id="alerts-list"></ul>
+        </div>
+
+        <div class="history-card">
+          <div class="history-header">
+            <h3>القراءات السابقة</h3>
+            <button id="refresh-button" class="secondary-button small">تحديث</button>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="history-chart"></canvas>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>التاريخ</th>
+                  <th>الحرارة</th>
+                  <th>الرطوبة</th>
+                  <th>الكهرباء</th>
+                  <th>العمر</th>
+                </tr>
+              </thead>
+              <tbody id="history-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -5,8 +5,20 @@ from app.auth import hash_password, verify_password, create_access_token, get_cu
 import random
 from app.database import init_db, get_db
 from app import models
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
+
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:8080", "http://127.0.0.1:8080"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.on_event("startup")
@@ -158,3 +170,12 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
     token = create_access_token({"user_id": db_user.id})
 
     return {"access_token": token, "token_type": "bearer"}
+@app.get("/my-readings")
+def get_my_readings(
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
+):
+    readings = db.query(models.SensorReading).filter(
+        models.SensorReading.user_id == current_user.id
+    ).all()
+    return readings
