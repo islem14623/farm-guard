@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Depends
 from pydantic import BaseModel
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session 
+from app.auth import hash_password, verify_password, create_access_token
 import random
 from app.database import init_db, get_db
 from app import models
@@ -17,7 +18,17 @@ class SensorData(BaseModel):
     temperature: float
     humidity: float
     electricity_on: bool
-    chicken_age_days: int
+    chicken_age_days: int 
+
+class UserSignup(BaseModel):
+    name: str
+    phone: str
+    password: str
+
+
+class UserLogin(BaseModel):
+    phone: str
+    password: str
 
 
 def get_ideal_temp_range(age_days: int):
@@ -115,3 +126,31 @@ def test_sensor(
     alerts = check_anomaly(data)
     new_reading = save_reading(data, db)
     return {"data": data, "alerts": alerts, "id": new_reading.id}
+
+@app.post("/signup")
+def signup(user: UserSignup, db: Session = Depends(get_db)):
+    existing_user = db.query(models.User).filter(models.User.phone == user.phone).first()
+    if existing_user:
+        return {"error": "Phone number already registered"}
+
+    hashed_pw = hash_password(user.password)
+    new_user = models.User(name=user.name, phone=user.phone, password=hashed_pw)
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    return {"status": "account created", "user_id": new_user.id}
+
+@app.post("/login")
+def login(user: UserLogin, db: Session = Depends(get_db)):
+    db_user = db.query(models.User).filter(models.User.phone == user.phone).first()
+
+    if not db_user:
+        return {"error": "Invalid phone or password"}
+
+    if not verify_password(user.password, db_user.password):
+        return {"error": "Invalid phone or password"}
+
+    token = create_access_token({"user_id": db_user.id})
+
+    return {"access_token": token, "token_type": "bearer"}
