@@ -6,6 +6,10 @@ import random
 from app.database import init_db, get_db
 from app import models
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
+from app.sms import send_sms_alert
+
+load_dotenv()
 
 
 app = FastAPI()
@@ -102,6 +106,8 @@ def read_root():
     return {"message": "Farm Guard API is running"}
 
 
+
+
 @app.post("/sensor-data")
 def receive_sensor_data(
     data: SensorData,
@@ -110,6 +116,11 @@ def receive_sensor_data(
 ):
     alerts = check_anomaly(data)
     new_reading = save_reading(data, db, user_id=current_user.id)
+
+    if alerts:
+        message = "\n".join(alerts)
+        send_sms_alert(current_user.phone, message)
+
     return {"status": "saved", "id": new_reading.id, "alerts": alerts}
 
 @app.get("/fake-sensor")
