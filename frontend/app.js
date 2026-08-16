@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:8000';
+const API_BASE = 'https://farm-guard-backend.onrender.com';
 
 const loginTab = document.getElementById('login-tab');
 const signupTab = document.getElementById('signup-tab');

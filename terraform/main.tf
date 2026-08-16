@@ -47,3 +47,15 @@ resource "render_web_service" "farm_guard_backend" {
 output "backend_url" {
   value = render_web_service.farm_guard_backend.url
 }
+
+resource "render_static_site" "farm_guard_frontend" {
+  name        = "farm-guard-frontend"
+  repo_url    = var.github_repo_url
+  branch      = var.branch
+  build_command = "echo 'no build needed'"
+  publish_path  = "frontend"
+}
+
+output "frontend_url" {
+  value = render_static_site.farm_guard_frontend.url
+}
