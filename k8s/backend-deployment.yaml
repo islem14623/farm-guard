@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: farm-guard-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: farm-guard-backend
+  template:
+    metadata:
+      labels:
+        app: farm-guard-backend
+    spec:
+      containers:
+        - name: farm-guard-backend
+          image: farm-guard-backend:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              value: "postgresql://farmguard:farmguard123@postgres-service:5432/farmguard"
+            - name: JWT_SECRET_KEY
+              value: "local-minikube-test-secret"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: farm-guard-backend-service
+spec:
+  selector:
+    app: farm-guard-backend
+  ports:
+    - port: 8000
+      targetPort: 8000
+  type: NodePort

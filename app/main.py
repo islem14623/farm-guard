@@ -119,9 +119,12 @@ def receive_sensor_data(
 
     if alerts:
         message = "\n".join(alerts)
-        send_sms_alert(current_user.phone, message)
-
-    return {"status": "saved", "id": new_reading.id, "alerts": alerts}
+        try:
+            send_sms_alert(current_user.phone, message)
+        except Exception as e:
+            print(f"Failed to send SMS alert: {e}")  
+            
+    return {"status": "saved", "id": new_reading.id, "alerts": alerts}           
 
 @app.get("/fake-sensor")
 def generate_fake_data(db: Session = Depends(get_db)):
