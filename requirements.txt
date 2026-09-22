@@ -23,6 +23,8 @@ multidict==6.7.1
 packaging==26.3
 passlib==1.7.4
 pluggy==1.6.0
+prometheus-fastapi-instrumentator==8.1.0
+prometheus_client==0.26.0
 propcache==0.5.2
 psycopg2-binary==2.9.12
 pyasn1==0.6.4

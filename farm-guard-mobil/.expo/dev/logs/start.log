@@ -1,0 +1,17 @@
+{"_e":"root:init","_t":1788347986185,"format":"v0-jsonl","version":"57.0.21"}
+{"_e":"env:mode","_t":1788347986185,"nodeEnv":"development","babelEnv":"development","mode":"development"}
+{"_e":"env:load","_t":1788347986188,"mode":"development","files":[],"env":{}}
+{"_e":"devserver:start","_t":1788347986377,"mode":"development","web":true,"baseUrl":"","asyncRoutes":false,"routerRoot":"../../../app","serverComponents":false,"serverActions":false,"serverRendering":false,"apiRoutes":false,"exporting":false}
+{"_e":"metro:config","_t":1788347986574,"serverRoot":"../../..","projectRoot":"../../..","exporting":false,"flags":{"autolinkingModuleResolution":false,"serverActions":false,"serverComponents":false,"reactCompiler":false,"optimizeGraph":false,"treeshaking":false,"logbox":false}}
+{"_e":"expo:dev-tools-plugin:load","_t":1788347986719,"plugins":[]}
+{"_e":"metro:instantiate","_t":1788347988987,"atlas":false,"workers":6,"host":"::","port":8081}
+{"_e":"metro:client_log","_t":1788348008085,"level":"error","data":["Project is incompatible with this version of Expo Go\n\nThe project you requested requires a newer version of Expo Go.\n\nHow to fix this error:\n\nDownload the latest version of Expo Go from the App Store."]}
+{"_e":"root:init","_t":1788349682127,"format":"v0-jsonl","version":"57.0.21"}
+{"_e":"env:mode","_t":1788349682127,"nodeEnv":"development","babelEnv":"development","mode":"development"}
+{"_e":"env:load","_t":1788349682130,"mode":"development","files":[],"env":{}}
+{"_e":"devserver:start","_t":1788349682324,"mode":"development","web":true,"baseUrl":"","asyncRoutes":false,"routerRoot":"../../../app","serverComponents":false,"serverActions":false,"serverRendering":false,"apiRoutes":false,"exporting":false}
+{"_e":"metro:config","_t":1788349682523,"serverRoot":"../../..","projectRoot":"../../..","exporting":false,"flags":{"autolinkingModuleResolution":false,"serverActions":false,"serverComponents":false,"reactCompiler":false,"optimizeGraph":false,"treeshaking":false,"logbox":false}}
+{"_e":"expo:dev-tools-plugin:load","_t":1788349682667,"plugins":[]}
+{"_e":"metro:server_log","_t":1788349683984,"level":"error","data":["An unknown error occurred while installing React Native DevTools. Details:\n\n[44968:0902/124802.619928:FATAL:sandbox/linux/suid/client/setuid_sandbox_host.cc:166] The SUID sandbox helper binary was found, but is not configured correctly. Rather than run without sandboxing I'm aborting now. You need to make sure that /home/islem/.cache/dotslash/64/ed7915e5fef86802e862c274e17f780fa75388/React Native DevTools-linux-x64/chrome-sandbox is owned by root and has mode 4755.\n"]}
+{"_e":"metro:instantiate","_t":1788349684863,"atlas":false,"workers":6,"host":"::","port":8081}
+{"_e":"metro:client_log","_t":1788349697789,"level":"error","data":["Project is incompatible with this version of Expo Go\n\nThe project you requested requires a newer version of Expo Go.\n\nHow to fix this error:\n\nDownload the latest version of Expo Go from the App Store."]}

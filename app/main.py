@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Depends
 from pydantic import BaseModel
 from sqlalchemy.orm import Session 
+from prometheus_fastapi_instrumentator import Instrumentator
 from app.auth import hash_password, verify_password, create_access_token, get_current_user
 import random
 from app.database import init_db, get_db
@@ -8,12 +9,23 @@ from app import models
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from app.sms import send_sms_alert
-
+import json 
 load_dotenv()
 
 
 app = FastAPI()
 
+Instrumentator().instrument(app).expose(app)
+
+import boto3
+
+s3 = boto3.client(
+    's3',
+    endpoint_url='http://localhost:4566',
+    aws_access_key_id='test',
+    aws_secret_access_key='test',
+    region_name='us-east-1'
+)
 
 
 app.add_middleware(
@@ -98,7 +110,20 @@ def save_reading(data: SensorData, db: Session, user_id: int = None):
     db.add(new_reading)
     db.commit()
     db.refresh(new_reading)
+
+    s3.put_object(
+        Bucket='my-bucket',
+        Key=f"readings/{new_reading.id}.json",
+        Body=json.dumps({
+            "temperature": new_reading.temperature,
+            "humidity": new_reading.humidity,
+            "electricity_on": new_reading.electricity_on,
+            "chicken_age_days": new_reading.chicken_age_days
+        })
+    )
+
     return new_reading
+
 
 
 @app.get("/")
