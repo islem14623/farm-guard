@@ -9,6 +9,7 @@ from app import models
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from app.sms import send_sms_alert
+from app.ai_agent import explain_alert
 import json 
 load_dotenv()
 
@@ -142,14 +143,14 @@ def receive_sensor_data(
     alerts = check_anomaly(data)
     new_reading = save_reading(data, db, user_id=current_user.id)
 
+    explanation = None
     if alerts:
-        message = "\n".join(alerts)
         try:
-            send_sms_alert(current_user.phone, message)
+            explanation = explain_alert(data, alerts)
         except Exception as e:
-            print(f"Failed to send SMS alert: {e}")  
-            
-    return {"status": "saved", "id": new_reading.id, "alerts": alerts}           
+            print(f"Failed to get AI explanation: {e}")
+
+    return {"status": "saved", "id": new_reading.id, "alerts": alerts, "explanation": explanation}           
 
 @app.get("/fake-sensor")
 def generate_fake_data(db: Session = Depends(get_db)):
@@ -161,7 +162,15 @@ def generate_fake_data(db: Session = Depends(get_db)):
     )
     alerts = check_anomaly(data)
     new_reading = save_reading(data, db)
-    return {"data": data, "alerts": alerts, "id": new_reading.id}
+
+    explanation = None
+    if alerts:
+        try:
+            explanation = explain_alert(data, alerts)
+        except Exception as e:
+            print(f"Failed to get AI explanation: {e}")
+
+    return {"data": data, "alerts": alerts, "id": new_reading.id, "explanation": explanation}
 
 
 @app.get("/test-sensor")
@@ -180,7 +189,15 @@ def test_sensor(
     )
     alerts = check_anomaly(data)
     new_reading = save_reading(data, db)
-    return {"data": data, "alerts": alerts, "id": new_reading.id}
+
+    explanation = None
+    if alerts:
+        try:
+            explanation = explain_alert(data, alerts)
+        except Exception as e:
+            print(f"Failed to get AI explanation: {e}")
+
+    return {"data": data, "alerts": alerts, "id": new_reading.id, "explanation": explanation}
 
 @app.post("/signup")
 def signup(user: UserSignup, db: Session = Depends(get_db)):

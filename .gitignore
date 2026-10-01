@@ -7,3 +7,5 @@ __pycache__/
 *.tfstate.backup
 .terraform/
 minikube-linux-amd64
+aws_test/
+test_ai_agent.py
