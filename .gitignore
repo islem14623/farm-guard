@@ -9,3 +9,4 @@ __pycache__/
 minikube-linux-amd64
 aws_test/
 test_ai_agent.py
+*.sql
