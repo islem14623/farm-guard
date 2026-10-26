@@ -7,7 +7,7 @@ services:
     env_file:
       - .env
     environment:
-      - DATABASE_URL=postgresql://farmguard:farmguard123@db:5432/farmguard
+      - DATABASE_URL=postgresql://farmguard:${POSTGRES_PASSWORD}@db:5432/farmguard
     depends_on:
       - db
 
@@ -16,7 +16,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=farmguard
-      - POSTGRES_PASSWORD=farmguard123
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=farmguard
     volumes:
       - pgdata:/var/lib/postgresql/data

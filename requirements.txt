@@ -47,3 +47,5 @@ typing_extensions==4.16.0
 urllib3==2.7.0
 uvicorn==0.52.1
 yarl==1.24.5
+groq==1.7.0
+boto3==1.43.98
